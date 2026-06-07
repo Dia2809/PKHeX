@@ -34,23 +34,33 @@ public partial class PokemonEditorViewModel : ViewModelBase
 
     [ObservableProperty] private int _selectedItemIndex;
 
-    [ObservableProperty] private int _ivHp;
-    [ObservableProperty] private int _ivAtk;
-    [ObservableProperty] private int _ivDef;
-    [ObservableProperty] private int _ivSpa;
-    [ObservableProperty] private int _ivSpd;
-    [ObservableProperty] private int _ivSpe;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IvTotal))] private int _ivHp;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IvTotal))] private int _ivAtk;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IvTotal))] private int _ivDef;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IvTotal))] private int _ivSpa;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IvTotal))] private int _ivSpd;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IvTotal))] private int _ivSpe;
 
-    [ObservableProperty] private int _evHp;
-    [ObservableProperty] private int _evAtk;
-    [ObservableProperty] private int _evDef;
-    [ObservableProperty] private int _evSpa;
-    [ObservableProperty] private int _evSpd;
-    [ObservableProperty] private int _evSpe;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(EvTotal))] [NotifyPropertyChangedFor(nameof(EvRemaining))] private int _evHp;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(EvTotal))] [NotifyPropertyChangedFor(nameof(EvRemaining))] private int _evAtk;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(EvTotal))] [NotifyPropertyChangedFor(nameof(EvRemaining))] private int _evDef;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(EvTotal))] [NotifyPropertyChangedFor(nameof(EvRemaining))] private int _evSpa;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(EvTotal))] [NotifyPropertyChangedFor(nameof(EvRemaining))] private int _evSpd;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(EvTotal))] [NotifyPropertyChangedFor(nameof(EvRemaining))] private int _evSpe;
 
     [ObservableProperty] private string _legalityReport = string.Empty;
-    [ObservableProperty] private bool _isLegal;
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(LegalityStatus))] private bool _isLegal;
     [ObservableProperty] private bool _hasPokemon;
+
+    // ── computed display helpers ──────────────────────────────────────────────
+    public int IvTotal => IvHp + IvAtk + IvDef + IvSpa + IvSpd + IvSpe;
+    public int EvTotal => EvHp + EvAtk + EvDef + EvSpa + EvSpd + EvSpe;
+    public int EvRemaining => 510 - EvTotal;
+    public string LegalityStatus => IsLegal ? "✓ Legal" : "✗ Illegal";
+
+    /// <summary>Raised after <see cref="ApplyChanges"/> writes back to the save,
+    /// so the owner can refresh the box grid (e.g. shiny colouring).</summary>
+    public Action? Applied { get; set; }
 
     // ── dropdown option lists ─────────────────────────────────────────────────
     public ObservableCollection<string> NatureOptions { get; } = [];
@@ -208,6 +218,9 @@ public partial class PokemonEditorViewModel : ViewModelBase
 
         // Re-run legality.
         RunLegalityCheck();
+
+        // Let the owner refresh the box grid (shiny colour, species, etc.).
+        Applied?.Invoke();
     }
 
     [RelayCommand]

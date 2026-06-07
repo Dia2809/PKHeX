@@ -4,203 +4,202 @@
              x:Class="PKHeX.Avalonia.Views.PokemonEditorView"
              x:DataType="vm:PokemonEditorViewModel">
   <Panel>
-  <!-- Empty state: no Pokémon selected -->
-  <TextBlock Text="Select a Pokémon to edit"
-             FontStyle="Italic"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"
-             IsVisible="{Binding !HasPokemon}" />
 
-  <!-- Editor: shown only when a Pokémon is loaded -->
-  <ScrollViewer IsVisible="{Binding HasPokemon}">
-    <StackPanel Margin="8" Spacing="6">
+    <!-- Empty state -->
+    <TextBlock Text="Select a Pokémon to edit"
+               FontStyle="Italic"
+               Foreground="#90A4AE"
+               FontSize="14"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               IsVisible="{Binding !HasPokemon}" />
 
-      <!-- ── Header row ─────────────────────────────────────── -->
-      <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-        <TextBlock Text="{Binding Species}"
-                   FontSize="16"
-                   FontWeight="Bold"
-                   VerticalAlignment="Center" />
-        <Border Width="4" />
-        <!-- Legal indicator: green tick -->
-        <TextBlock Text="✓"
-                   Foreground="Green"
-                   FontWeight="Bold"
-                   VerticalAlignment="Center"
-                   IsVisible="{Binding IsLegal}">
-          <ToolTip.Tip>
-            <TextBlock Text="{Binding LegalityReport}" />
-          </ToolTip.Tip>
-        </TextBlock>
-        <!-- Illegal indicator: red cross -->
-        <TextBlock Text="✗"
-                   Foreground="Red"
-                   FontWeight="Bold"
-                   VerticalAlignment="Center"
-                   IsVisible="{Binding !IsLegal}">
-          <ToolTip.Tip>
-            <TextBlock Text="{Binding LegalityReport}" />
-          </ToolTip.Tip>
-        </TextBlock>
-      </StackPanel>
+    <!-- Editor -->
+    <ScrollViewer IsVisible="{Binding HasPokemon}" Padding="2">
+      <StackPanel>
 
-      <Separator />
+        <!-- ── Header: species + legality badge ───────────────── -->
+        <Border Classes="card">
+          <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock Text="{Binding Species}"
+                         FontSize="20" FontWeight="Bold"
+                         Foreground="#263238"
+                         VerticalAlignment="Center" />
+              <Border Background="#FFF3CD" CornerRadius="3"
+                      Padding="6,2" Margin="10,0,0,0"
+                      VerticalAlignment="Center"
+                      IsVisible="{Binding IsShiny}">
+                <TextBlock Text="★ Shiny" FontSize="11" Foreground="#8A6D00" />
+              </Border>
+            </StackPanel>
 
-      <!-- ── Identity section ───────────────────────────────── -->
-      <Grid ColumnDefinitions="120,*,120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+            <Border Grid.Column="1"
+                    Classes="badge"
+                    Classes.ok="{Binding IsLegal}"
+                    Classes.bad="{Binding !IsLegal}"
+                    CornerRadius="4" Padding="10,5"
+                    VerticalAlignment="Center">
+              <TextBlock Text="{Binding LegalityStatus}"
+                         FontWeight="SemiBold" FontSize="12" />
+            </Border>
+          </Grid>
+        </Border>
 
-        <!-- Row 0: Nickname / Nicknamed -->
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Nickname:" VerticalAlignment="Center" />
-        <TextBox   Grid.Row="0" Grid.Column="1" Text="{Binding Nickname}" />
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="Nicknamed:" VerticalAlignment="Center" />
-        <CheckBox  Grid.Row="0" Grid.Column="3" IsChecked="{Binding IsNicknamed}" />
+        <!-- ── Identity ───────────────────────────────────────── -->
+        <Border Classes="card">
+          <StackPanel>
+            <TextBlock Classes="h2" Text="Identity" />
+            <Grid ColumnDefinitions="100,*,16,100,*" RowDefinitions="Auto,Auto,Auto">
 
-        <!-- Row 1: Level / Shiny -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Level:" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="1" Grid.Column="1"
-                       Value="{Binding Level}"
-                       Minimum="1" Maximum="100"
-                       Width="80"
-                       HorizontalAlignment="Left" />
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Shiny:" VerticalAlignment="Center" />
-        <CheckBox  Grid.Row="1" Grid.Column="3" IsChecked="{Binding IsShiny}" />
+              <!-- Row 0 -->
+              <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="Nickname" Margin="0,0,8,8" />
+              <TextBox   Grid.Row="0" Grid.Column="1" Classes="field" Text="{Binding Nickname}" Margin="0,0,0,8" />
+              <TextBlock Grid.Row="0" Grid.Column="3" Classes="label" Text="Level" Margin="0,0,8,8" />
+              <NumericUpDown Grid.Row="0" Grid.Column="4"
+                            Value="{Binding Level}" Minimum="1" Maximum="100"
+                            Increment="1" FormatString="0"
+                            HorizontalAlignment="Stretch" Margin="0,0,0,8" />
 
-        <!-- Row 2: OT Name / Gender -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="OT Name:" VerticalAlignment="Center" />
-        <TextBox   Grid.Row="2" Grid.Column="1" Text="{Binding OtName}" />
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="Gender:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="2" Grid.Column="3"
-                   ItemsSource="{Binding GenderOptions}"
-                   SelectedIndex="{Binding SelectedGenderIndex}"
-                   HorizontalAlignment="Stretch" />
+              <!-- Row 1 -->
+              <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="OT Name" Margin="0,0,8,8" />
+              <TextBox   Grid.Row="1" Grid.Column="1" Classes="field" Text="{Binding OtName}" Margin="0,0,0,8" />
+              <TextBlock Grid.Row="1" Grid.Column="3" Classes="label" Text="Gender" Margin="0,0,8,8" />
+              <ComboBox  Grid.Row="1" Grid.Column="4" Classes="field"
+                         ItemsSource="{Binding GenderOptions}"
+                         SelectedIndex="{Binding SelectedGenderIndex}" Margin="0,0,0,8" />
 
-        <!-- Row 3: Nature / Ability -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Nature:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="3" Grid.Column="1"
-                   ItemsSource="{Binding NatureOptions}"
-                   SelectedIndex="{Binding SelectedNatureIndex}"
-                   HorizontalAlignment="Stretch" />
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="Ability:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="3" Grid.Column="3"
-                   ItemsSource="{Binding AbilityOptions}"
-                   SelectedIndex="{Binding SelectedAbilityIndex}"
-                   HorizontalAlignment="Stretch" />
+              <!-- Row 2 -->
+              <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                        Content="Shiny" IsChecked="{Binding IsShiny}" />
+              <CheckBox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"
+                        Content="Nicknamed" IsChecked="{Binding IsNicknamed}" />
+            </Grid>
+          </StackPanel>
+        </Border>
 
-        <!-- Row 4: Held Item (spans columns 1-3) -->
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Held Item:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                   ItemsSource="{Binding ItemOptions}"
-                   SelectedIndex="{Binding SelectedItemIndex}"
-                   HorizontalAlignment="Stretch" />
-      </Grid>
+        <!-- ── Nature / Ability / Item ────────────────────────── -->
+        <Border Classes="card">
+          <StackPanel>
+            <TextBlock Classes="h2" Text="Characteristics" />
+            <Grid ColumnDefinitions="100,*" RowDefinitions="Auto,Auto,Auto">
+              <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="Nature" Margin="0,0,8,8" />
+              <ComboBox  Grid.Row="0" Grid.Column="1" Classes="field"
+                         ItemsSource="{Binding NatureOptions}"
+                         SelectedIndex="{Binding SelectedNatureIndex}" Margin="0,0,0,8" />
 
-      <Separator />
+              <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="Ability" Margin="0,0,8,8" />
+              <ComboBox  Grid.Row="1" Grid.Column="1" Classes="field"
+                         ItemsSource="{Binding AbilityOptions}"
+                         SelectedIndex="{Binding SelectedAbilityIndex}" Margin="0,0,0,8" />
 
-      <!-- ── Moves section ──────────────────────────────────── -->
-      <TextBlock Text="Moves" FontWeight="Bold" />
-      <Grid ColumnDefinitions="80,*" RowDefinitions="Auto,Auto,Auto,Auto">
+              <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="Held Item" />
+              <ComboBox  Grid.Row="2" Grid.Column="1" Classes="field"
+                         ItemsSource="{Binding ItemOptions}"
+                         SelectedIndex="{Binding SelectedItemIndex}" />
+            </Grid>
+          </StackPanel>
+        </Border>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Move 1:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="0" Grid.Column="1"
-                   ItemsSource="{Binding MoveOptions}"
-                   SelectedIndex="{Binding SelectedMove1Index}"
-                   HorizontalAlignment="Stretch" />
+        <!-- ── Moves ──────────────────────────────────────────── -->
+        <Border Classes="card">
+          <StackPanel>
+            <TextBlock Classes="h2" Text="Moves" />
+            <Grid ColumnDefinitions="70,*,16,70,*" RowDefinitions="Auto,Auto">
+              <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="Move 1" Margin="0,0,8,8" />
+              <ComboBox  Grid.Row="0" Grid.Column="1" Classes="field"
+                         ItemsSource="{Binding MoveOptions}"
+                         SelectedIndex="{Binding SelectedMove1Index}" Margin="0,0,0,8" />
+              <TextBlock Grid.Row="0" Grid.Column="3" Classes="label" Text="Move 2" Margin="0,0,8,8" />
+              <ComboBox  Grid.Row="0" Grid.Column="4" Classes="field"
+                         ItemsSource="{Binding MoveOptions}"
+                         SelectedIndex="{Binding SelectedMove2Index}" Margin="0,0,0,8" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Move 2:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="1" Grid.Column="1"
-                   ItemsSource="{Binding MoveOptions}"
-                   SelectedIndex="{Binding SelectedMove2Index}"
-                   HorizontalAlignment="Stretch" />
+              <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="Move 3" />
+              <ComboBox  Grid.Row="1" Grid.Column="1" Classes="field"
+                         ItemsSource="{Binding MoveOptions}"
+                         SelectedIndex="{Binding SelectedMove3Index}" />
+              <TextBlock Grid.Row="1" Grid.Column="3" Classes="label" Text="Move 4" />
+              <ComboBox  Grid.Row="1" Grid.Column="4" Classes="field"
+                         ItemsSource="{Binding MoveOptions}"
+                         SelectedIndex="{Binding SelectedMove4Index}" />
+            </Grid>
+          </StackPanel>
+        </Border>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Move 3:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="2" Grid.Column="1"
-                   ItemsSource="{Binding MoveOptions}"
-                   SelectedIndex="{Binding SelectedMove3Index}"
-                   HorizontalAlignment="Stretch" />
+        <!-- ── Stats (IV / EV) ────────────────────────────────── -->
+        <Border Classes="card">
+          <StackPanel>
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0" Classes="h2" Text="Stats" />
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                <TextBlock Classes="label" VerticalAlignment="Center"
+                           Text="{Binding IvTotal, StringFormat='IV {0}/186'}" />
+                <TextBlock Classes="label" VerticalAlignment="Center"
+                           Text="{Binding EvTotal, StringFormat='EV {0}/510'}" />
+              </StackPanel>
+            </Grid>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Move 4:" VerticalAlignment="Center" />
-        <ComboBox  Grid.Row="3" Grid.Column="1"
-                   ItemsSource="{Binding MoveOptions}"
-                   SelectedIndex="{Binding SelectedMove4Index}"
-                   HorizontalAlignment="Stretch" />
-      </Grid>
+            <Grid ColumnDefinitions="70,90,*,90" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+              <!-- header -->
+              <TextBlock Grid.Row="0" Grid.Column="1" Text="IV (0–31)"
+                         FontSize="11" Foreground="#78909C" HorizontalAlignment="Center" Margin="0,0,0,4" />
+              <TextBlock Grid.Row="0" Grid.Column="3" Text="EV (0–252)"
+                         FontSize="11" Foreground="#78909C" HorizontalAlignment="Center" Margin="0,0,0,4" />
 
-      <Separator />
+              <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="HP" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="1" Grid.Column="1" Classes="stat" Value="{Binding IvHp}"  Minimum="0" Maximum="31"  FormatString="0" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="1" Grid.Column="3" Classes="stat" Value="{Binding EvHp}"  Minimum="0" Maximum="252" FormatString="0" Margin="0,0,0,6" />
 
-      <!-- ── IVs / EVs section ──────────────────────────────── -->
-      <TextBlock Text="IVs / EVs" FontWeight="Bold" />
-      <Grid ColumnDefinitions="80,60,8,60,8" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+              <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="Attack" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="2" Grid.Column="1" Classes="stat" Value="{Binding IvAtk}" Minimum="0" Maximum="31"  FormatString="0" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="2" Grid.Column="3" Classes="stat" Value="{Binding EvAtk}" Minimum="0" Maximum="252" FormatString="0" Margin="0,0,0,6" />
 
-        <!-- Header row -->
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="" />
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="IV"
-                   HorizontalAlignment="Center" FontWeight="SemiBold" />
-        <!-- Column 2: spacer -->
-        <TextBlock Grid.Row="0" Grid.Column="3" Text="EV"
-                   HorizontalAlignment="Center" FontWeight="SemiBold" />
+              <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="Defense" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="3" Grid.Column="1" Classes="stat" Value="{Binding IvDef}" Minimum="0" Maximum="31"  FormatString="0" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="3" Grid.Column="3" Classes="stat" Value="{Binding EvDef}" Minimum="0" Maximum="252" FormatString="0" Margin="0,0,0,6" />
 
-        <!-- HP -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="HP" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="1" Grid.Column="1"
-                       Value="{Binding IvHp}" Minimum="0" Maximum="31" Width="60" />
-        <NumericUpDown Grid.Row="1" Grid.Column="3"
-                       Value="{Binding EvHp}" Minimum="0" Maximum="252" Width="60" />
+              <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="Sp. Atk" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="4" Grid.Column="1" Classes="stat" Value="{Binding IvSpa}" Minimum="0" Maximum="31"  FormatString="0" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="4" Grid.Column="3" Classes="stat" Value="{Binding EvSpa}" Minimum="0" Maximum="252" FormatString="0" Margin="0,0,0,6" />
 
-        <!-- Attack -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Atk" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="2" Grid.Column="1"
-                       Value="{Binding IvAtk}" Minimum="0" Maximum="31" Width="60" />
-        <NumericUpDown Grid.Row="2" Grid.Column="3"
-                       Value="{Binding EvAtk}" Minimum="0" Maximum="252" Width="60" />
+              <TextBlock Grid.Row="5" Grid.Column="0" Classes="label" Text="Sp. Def" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="5" Grid.Column="1" Classes="stat" Value="{Binding IvSpd}" Minimum="0" Maximum="31"  FormatString="0" Margin="0,0,8,6" />
+              <NumericUpDown Grid.Row="5" Grid.Column="3" Classes="stat" Value="{Binding EvSpd}" Minimum="0" Maximum="252" FormatString="0" Margin="0,0,0,6" />
 
-        <!-- Defense -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Def" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="3" Grid.Column="1"
-                       Value="{Binding IvDef}" Minimum="0" Maximum="31" Width="60" />
-        <NumericUpDown Grid.Row="3" Grid.Column="3"
-                       Value="{Binding EvDef}" Minimum="0" Maximum="252" Width="60" />
+              <TextBlock Grid.Row="6" Grid.Column="0" Classes="label" Text="Speed" Margin="0,0,8,0" />
+              <NumericUpDown Grid.Row="6" Grid.Column="1" Classes="stat" Value="{Binding IvSpe}" Minimum="0" Maximum="31"  FormatString="0" Margin="0,0,8,0" />
+              <NumericUpDown Grid.Row="6" Grid.Column="3" Classes="stat" Value="{Binding EvSpe}" Minimum="0" Maximum="252" FormatString="0" />
+            </Grid>
 
-        <!-- Sp. Atk -->
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="SpAtk" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="4" Grid.Column="1"
-                       Value="{Binding IvSpa}" Minimum="0" Maximum="31" Width="60" />
-        <NumericUpDown Grid.Row="4" Grid.Column="3"
-                       Value="{Binding EvSpa}" Minimum="0" Maximum="252" Width="60" />
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+              <Button Classes="tool" Content="Max IVs"  Command="{Binding MaxIVsCommand}"  Margin="0,0,8,0" />
+              <Button Classes="tool" Content="Max EVs"  Command="{Binding MaxEVsCommand}"  Margin="0,0,8,0" />
+              <Button Classes="tool" Content="Zero EVs" Command="{Binding ZeroEVsCommand}" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
 
-        <!-- Sp. Def -->
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="SpDef" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="5" Grid.Column="1"
-                       Value="{Binding IvSpd}" Minimum="0" Maximum="31" Width="60" />
-        <NumericUpDown Grid.Row="5" Grid.Column="3"
-                       Value="{Binding EvSpd}" Minimum="0" Maximum="252" Width="60" />
+        <!-- ── Legality report ────────────────────────────────── -->
+        <Expander Header="Legality Report" IsExpanded="True" Margin="0,0,0,10">
+          <Border Background="#FAFAFA" CornerRadius="4" Padding="10">
+            <SelectableTextBlock Text="{Binding LegalityReport}"
+                                 FontFamily="monospace"
+                                 FontSize="12"
+                                 TextWrapping="Wrap"
+                                 Foreground="#37474F" />
+          </Border>
+        </Expander>
 
-        <!-- Speed -->
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="Spe" VerticalAlignment="Center" />
-        <NumericUpDown Grid.Row="6" Grid.Column="1"
-                       Value="{Binding IvSpe}" Minimum="0" Maximum="31" Width="60" />
-        <NumericUpDown Grid.Row="6" Grid.Column="3"
-                       Value="{Binding EvSpe}" Minimum="0" Maximum="252" Width="60" />
-      </Grid>
-
-      <Separator />
-
-      <!-- ── Action buttons ─────────────────────────────────── -->
-      <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
-        <Button Content="Apply Changes"
+        <!-- ── Apply ──────────────────────────────────────────── -->
+        <Button Classes="primary"
+                Content="Apply Changes"
                 Command="{Binding ApplyChangesCommand}"
-                Margin="0,0,4,4" />
-        <Button Content="Max IVs"
-                Command="{Binding MaxIVsCommand}"
-                Margin="0,0,4,4" />
-        <Button Content="Zero EVs"
-                Command="{Binding ZeroEVsCommand}"
-                Margin="0,0,4,4" />
-        <Button Content="Max EVs"
-                Command="{Binding MaxEVsCommand}"
-                Margin="0,0,4,4" />
-      </WrapPanel>
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Margin="0,0,0,4" />
 
-    </StackPanel>
-  </ScrollViewer>
+      </StackPanel>
+    </ScrollViewer>
   </Panel>
 </UserControl>

@@ -33,6 +33,17 @@ public partial class MainWindowViewModel : ViewModelBase
     /// the ViewModel holding a hard reference to the Window.</summary>
     public TopLevel? TopLevel { get; set; }
 
+    public MainWindowViewModel()
+    {
+        // Refresh the box grid after the editor writes changes back to the save,
+        // so slot colouring/species stay in sync with edits.
+        PokemonEditor.Applied = () =>
+        {
+            if (_sav is not null)
+                LoadBox(CurrentBoxIndex);
+        };
+    }
+
     // ── file-type helpers ────────────────────────────────────────────────────
     private static readonly FilePickerFileType SaveFileType = new("Save Files")
     {

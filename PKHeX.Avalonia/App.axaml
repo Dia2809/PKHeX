@@ -1,8 +1,94 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="PKHeX.Avalonia.App"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Light">
     <Application.Styles>
         <FluentTheme />
+
+        <!-- Section heading -->
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#37474F" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <!-- Field labels -->
+        <Style Selector="TextBlock.label">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="#546E7A" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+
+        <!-- Trainer key/value rows -->
+        <Style Selector="TextBlock.kv-key">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#78909C" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,3,10,3" />
+        </Style>
+        <Style Selector="TextBlock.kv-val">
+            <Setter Property="Foreground" Value="#263238" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,3" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <!-- Card container -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="BoxShadow" Value="0 1 3 0 #11000000" />
+        </Style>
+
+        <!-- Inputs: consistent height & spacing -->
+        <Style Selector="TextBox.field">
+            <Setter Property="MinHeight" Value="30" />
+        </Style>
+        <Style Selector="ComboBox.field">
+            <Setter Property="MinHeight" Value="30" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="NumericUpDown.stat">
+            <Setter Property="MinHeight" Value="30" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <!-- Primary action button -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="#1976D2" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="14,7" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1565C0" />
+        </Style>
+
+        <!-- Secondary buttons -->
+        <Style Selector="Button.tool">
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <!-- Legality badge: green when legal, red when not -->
+        <Style Selector="Border.badge.ok">
+            <Setter Property="Background" Value="#E6F4EA" />
+        </Style>
+        <Style Selector="Border.badge.bad">
+            <Setter Property="Background" Value="#FDECEA" />
+        </Style>
+        <Style Selector="Border.badge.ok TextBlock">
+            <Setter Property="Foreground" Value="#1E7E34" />
+        </Style>
+        <Style Selector="Border.badge.bad TextBlock">
+            <Setter Property="Foreground" Value="#C62828" />
+        </Style>
     </Application.Styles>
 </Application>
