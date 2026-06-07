@@ -12,7 +12,6 @@
     <PublishReadyToRun>false</PublishReadyToRun>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
-    <ApplicationIcon>../icon.png</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
