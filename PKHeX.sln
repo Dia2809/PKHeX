@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PKHeX.Drawing.PokeSprite", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PKHeX.Drawing.Misc", "PKHeX.Drawing.Misc\PKHeX.Drawing.Misc.csproj", "{BBBCAF7F-1487-46C5-8BD7-1E276AA1891E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PKHeX.Avalonia", "PKHeX.Avalonia\PKHeX.Avalonia.csproj", "{FA2D8E31-5C7B-4A90-B3E6-C1D2F8A94E07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{BBBCAF7F-1487-46C5-8BD7-1E276AA1891E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBBCAF7F-1487-46C5-8BD7-1E276AA1891E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBBCAF7F-1487-46C5-8BD7-1E276AA1891E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2D8E31-5C7B-4A90-B3E6-C1D2F8A94E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2D8E31-5C7B-4A90-B3E6-C1D2F8A94E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2D8E31-5C7B-4A90-B3E6-C1D2F8A94E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2D8E31-5C7B-4A90-B3E6-C1D2F8A94E07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

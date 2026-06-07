@@ -1,0 +1,176 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PKHeX.Avalonia.ViewModels"
+        xmlns:views="using:PKHeX.Avalonia.Views"
+        x:Class="PKHeX.Avalonia.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="PKHeX"
+        Width="1100" Height="720"
+        MinWidth="800" MinHeight="580">
+
+    <DockPanel>
+
+        <!-- ═══ Menu bar ═══ -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open"
+                          Command="{Binding OpenSaveCommand}"
+                          InputGesture="Ctrl+O" />
+                <MenuItem Header="_Save"
+                          Command="{Binding SaveCommand}"
+                          InputGesture="Ctrl+S" />
+                <MenuItem Header="Save _As…"
+                          Command="{Binding SaveAsCommand}" />
+                <Separator />
+                <MenuItem Header="E_xit"
+                          Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About">
+                    <MenuItem.Styles>
+                        <!-- Handled inline via Click in code-behind if needed; for now use a simple approach -->
+                    </MenuItem.Styles>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <!-- ═══ Status bar ═══ -->
+        <Border DockPanel.Dock="Bottom"
+                BorderBrush="#CCCCCC" BorderThickness="0,1,0,0"
+                Padding="6,3">
+            <TextBlock Text="{Binding StatusText}"
+                       FontSize="12"
+                       VerticalAlignment="Center" />
+        </Border>
+
+        <!-- ═══ Main content ═══ -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- ── Left panel ── -->
+            <DockPanel Grid.Column="0">
+
+                <!-- Trainer info block -->
+                <Border DockPanel.Dock="Top"
+                        Padding="8"
+                        BorderBrush="#CCCCCC" BorderThickness="0,0,0,1">
+                    <Panel>
+                    <!-- No save loaded -->
+                    <TextBlock Text="No save file loaded"
+                               FontStyle="Italic"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"
+                               IsVisible="{Binding !HasSave}" />
+
+                    <!-- Trainer info grid (visible when save is loaded) -->
+                    <Grid IsVisible="{Binding HasSave}"
+                          ColumnDefinitions="Auto,*"
+                          RowDefinitions="Auto,Auto,Auto,Auto">
+
+                        <!-- Row 0: Trainer -->
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Trainer: "
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2,4,2" />
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding TrainerName}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2" />
+
+                        <!-- Row 1: Game -->
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Text="Game: "
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2,4,2" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding GameVersion}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2" />
+
+                        <!-- Row 2: TID -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Text="TID: "
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2,4,2" />
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding TrainerID}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2" />
+
+                        <!-- Row 3: Money -->
+                        <TextBlock Grid.Row="3" Grid.Column="0"
+                                   Text="Money: "
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2,4,2" />
+                        <TextBlock Grid.Row="3" Grid.Column="1"
+                                   Text="{Binding Money}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,2" />
+                    </Grid>
+                    </Panel>
+                </Border>
+
+                <!-- Box selector -->
+                <ComboBox DockPanel.Dock="Top"
+                          ItemsSource="{Binding BoxNames}"
+                          SelectedIndex="{Binding CurrentBoxIndex}"
+                          IsEnabled="{Binding HasSave}"
+                          HorizontalAlignment="Stretch"
+                          Margin="4" />
+
+                <!-- Box slots -->
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding CurrentBoxSlots}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SlotViewModel">
+                                <Button Width="52" Height="42"
+                                        Margin="1"
+                                        Background="{Binding Background}"
+                                        ToolTip.Tip="{Binding ToolTipText}"
+                                        Command="{Binding ((vm:MainWindowViewModel)$parent[Window].DataContext).SelectSlotCommand}"
+                                        CommandParameter="{Binding}"
+                                        Padding="1">
+                                    <TextBlock Text="{Binding DisplayText}"
+                                               FontSize="9"
+                                               TextWrapping="Wrap"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               TextAlignment="Center" />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </DockPanel>
+
+            <!-- ── Splitter ── -->
+            <GridSplitter Grid.Column="1"
+                          ResizeDirection="Columns"
+                          HorizontalAlignment="Stretch"
+                          Background="#DDDDDD" />
+
+            <!-- ── Right panel: Pokémon editor ── -->
+            <ScrollViewer Grid.Column="2"
+                          IsEnabled="{Binding HasSave}">
+                <views:PokemonEditorView DataContext="{Binding PokemonEditor}"
+                                         Margin="8" />
+            </ScrollViewer>
+
+        </Grid>
+
+    </DockPanel>
+</Window>
