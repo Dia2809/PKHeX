@@ -140,7 +140,7 @@
                                         Margin="1"
                                         Background="{Binding Background}"
                                         ToolTip.Tip="{Binding ToolTipText}"
-                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SelectSlotCommand}"
+                                        Command="{Binding SelectCommand}"
                                         CommandParameter="{Binding}"
                                         Padding="1">
                                     <TextBlock Text="{Binding DisplayText}"

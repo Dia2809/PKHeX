@@ -212,7 +212,7 @@ public partial class MainWindowViewModel : ViewModelBase
         for (int slot = 0; slot < slotCount; slot++)
         {
             var pk = _sav.GetBoxSlotAtIndex(box, slot);
-            CurrentBoxSlots.Add(new SlotViewModel(box, slot, pk, _speciesNames));
+            CurrentBoxSlots.Add(new SlotViewModel(box, slot, pk, _speciesNames, SelectSlotCommand));
         }
     }
 }
