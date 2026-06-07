@@ -22,7 +22,14 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private int _currentBoxIndex;
     [ObservableProperty] private ObservableCollection<string> _boxNames = [];
     [ObservableProperty] private ObservableCollection<SlotViewModel> _currentBoxSlots = [];
+    [ObservableProperty] private ObservableCollection<SlotViewModel> _partySlots = [];
     [ObservableProperty] private PokemonEditorViewModel _pokemonEditor = new();
+
+    // SAV tab info
+    [ObservableProperty] private string _playTime = string.Empty;
+    [ObservableProperty] private string _savLanguage = string.Empty;
+    [ObservableProperty] private string _savGameCode = string.Empty;
+    [ObservableProperty] private string _savGeneration = string.Empty;
 
     // ── private backing state ───────────────────────────────────────────────
     private SaveFile? _sav;
@@ -35,12 +42,14 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        // Refresh the box grid after the editor writes changes back to the save,
-        // so slot colouring/species stay in sync with edits.
+        // Refresh box grid and party after the editor writes changes back to save.
         PokemonEditor.Applied = () =>
         {
             if (_sav is not null)
+            {
                 LoadBox(CurrentBoxIndex);
+                LoadParty();
+            }
         };
     }
 
@@ -172,6 +181,15 @@ public partial class MainWindowViewModel : ViewModelBase
         PokemonEditor.LoadPokemon(slot.Entity, slot.Box, slot.Slot, _sav);
     }
 
+    [RelayCommand]
+    private void SelectPartySlot(SlotViewModel slot)
+    {
+        if (_sav is null || slot.IsEmpty)
+            return;
+
+        PokemonEditor.LoadPokemon(slot.Entity, -1, slot.Slot, _sav, isPartySlot: true);
+    }
+
     // ── partial property callbacks ───────────────────────────────────────────
 
     partial void OnCurrentBoxIndexChanged(int value)
@@ -207,9 +225,16 @@ public partial class MainWindowViewModel : ViewModelBase
                 BoxNames.Add(name);
         }
 
+        // SAV tab details.
+        PlayTime = sav.PlayTimeString;
+        SavLanguage = sav.Language.ToString();
+        SavGameCode = sav.Version.ToString();
+        SavGeneration = $"Gen {sav.Generation}";
+
         // Load first box.
         CurrentBoxIndex = 0;
         LoadBox(0);
+        LoadParty();
     }
 
     private void LoadBox(int box)
@@ -224,6 +249,20 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             var pk = _sav.GetBoxSlotAtIndex(box, slot);
             CurrentBoxSlots.Add(new SlotViewModel(box, slot, pk, _speciesNames, SelectSlotCommand));
+        }
+    }
+
+    private void LoadParty()
+    {
+        if (_sav is null || !_sav.HasParty)
+            return;
+
+        PartySlots.Clear();
+
+        for (int i = 0; i < 6; i++)
+        {
+            var pk = _sav.GetPartySlotAtIndex(i);
+            PartySlots.Add(new SlotViewModel(-1, i, pk, _speciesNames, SelectPartySlotCommand));
         }
     }
 }

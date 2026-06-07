@@ -23,6 +23,19 @@
         <Style Selector="Button.slot:pointerover">
             <Setter Property="BorderBrush" Value="#1976D2" />
         </Style>
+        <!-- Party slot buttons — slightly taller to show full sprite -->
+        <Style Selector="Button.party-slot">
+            <Setter Property="Height" Value="52" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="2,2" />
+            <Setter Property="Padding" Value="4,2" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="BorderBrush" Value="#CFD8DC" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="Button.party-slot:pointerover">
+            <Setter Property="BorderBrush" Value="#1976D2" />
+        </Style>
     </Window.Styles>
 
     <DockPanel>
@@ -49,24 +62,23 @@
         </Border>
 
         <!-- ═══ Main content ═══ -->
-        <Grid ColumnDefinitions="372,4,*">
+        <Grid ColumnDefinitions="380,4,*">
 
             <!-- ── Left sidebar ── -->
             <Border Grid.Column="0" Background="#FAFAFA"
                     BorderBrush="#CFD8DC" BorderThickness="0,0,1,0">
-                <DockPanel Margin="10">
+                <DockPanel Margin="8">
 
-                    <!-- Trainer card -->
+                    <!-- Trainer card (always visible above tabs) -->
                     <Border DockPanel.Dock="Top"
                             Background="White" BorderBrush="#E0E0E0" BorderThickness="1"
-                            CornerRadius="6" Padding="12" Margin="0,0,0,10"
+                            CornerRadius="6" Padding="10" Margin="0,0,0,8"
                             BoxShadow="0 1 3 0 #11000000">
                         <Panel>
                             <TextBlock Text="No save file loaded"
                                        FontStyle="Italic" Foreground="#90A4AE"
                                        HorizontalAlignment="Center" Margin="0,8"
                                        IsVisible="{Binding !HasSave}" />
-
                             <Grid IsVisible="{Binding HasSave}"
                                   ColumnDefinitions="Auto,*"
                                   RowDefinitions="Auto,Auto,Auto,Auto">
@@ -82,55 +94,132 @@
                         </Panel>
                     </Border>
 
-                    <!-- Box selector -->
-                    <TextBlock DockPanel.Dock="Top" Text="BOX"
-                               FontSize="11" FontWeight="SemiBold" Foreground="#78909C"
-                               Margin="2,0,0,4" />
-                    <ComboBox DockPanel.Dock="Top"
-                              ItemsSource="{Binding BoxNames}"
-                              SelectedIndex="{Binding CurrentBoxIndex}"
-                              IsEnabled="{Binding HasSave}"
-                              HorizontalAlignment="Stretch"
-                              Margin="0,0,0,8" />
+                    <!-- Tabs: Box / Party / SAV -->
+                    <TabControl DockPanel.Dock="Top">
 
-                    <!-- Box slots -->
-                    <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1"
-                            CornerRadius="6" Padding="4">
-                        <ScrollViewer>
-                            <ItemsControl ItemsSource="{Binding CurrentBoxSlots}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:SlotViewModel">
-                                        <Button Classes="slot"
-                                                Background="{Binding Background}"
-                                                ToolTip.Tip="{Binding ToolTipText}"
-                                                Command="{Binding SelectCommand}"
-                                                CommandParameter="{Binding}">
-                                            <Panel>
-                                                <Image Source="{Binding Sprite}"
-                                                       Stretch="Uniform"
-                                                       Width="46" Height="40" />
-                                                <Image Source="{Binding ItemSprite}"
-                                                       Width="15" Height="15"
-                                                       HorizontalAlignment="Left"
-                                                       VerticalAlignment="Bottom" />
-                                                <TextBlock Text="★"
-                                                           IsVisible="{Binding ShowShinyStar}"
-                                                           Foreground="#FFC107"
-                                                           FontSize="11"
-                                                           HorizontalAlignment="Right"
-                                                           VerticalAlignment="Top" />
-                                            </Panel>
-                                        </Button>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </Border>
+                        <!-- ── Box tab ── -->
+                        <TabItem Header="Box">
+                            <DockPanel Margin="0,6,0,0">
+                                <!-- Box selector -->
+                                <ComboBox DockPanel.Dock="Top"
+                                          ItemsSource="{Binding BoxNames}"
+                                          SelectedIndex="{Binding CurrentBoxIndex}"
+                                          IsEnabled="{Binding HasSave}"
+                                          HorizontalAlignment="Stretch"
+                                          Margin="0,0,0,6" />
+                                <!-- Box slots grid -->
+                                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1"
+                                        CornerRadius="6" Padding="4">
+                                    <ScrollViewer>
+                                        <ItemsControl ItemsSource="{Binding CurrentBoxSlots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate x:DataType="vm:SlotViewModel">
+                                                    <Button Classes="slot"
+                                                            Background="{Binding Background}"
+                                                            ToolTip.Tip="{Binding ToolTipText}"
+                                                            Command="{Binding SelectCommand}"
+                                                            CommandParameter="{Binding}">
+                                                        <Panel>
+                                                            <Image Source="{Binding Sprite}"
+                                                                   Stretch="Uniform"
+                                                                   Width="46" Height="40" />
+                                                            <Image Source="{Binding ItemSprite}"
+                                                                   Width="15" Height="15"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Bottom" />
+                                                            <TextBlock Text="★"
+                                                                       IsVisible="{Binding ShowShinyStar}"
+                                                                       Foreground="#FFC107"
+                                                                       FontSize="11"
+                                                                       HorizontalAlignment="Right"
+                                                                       VerticalAlignment="Top" />
+                                                        </Panel>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Border>
+                            </DockPanel>
+                        </TabItem>
+
+                        <!-- ── Party tab ── -->
+                        <TabItem Header="Party">
+                            <Border Margin="0,6,0,0" Background="White" BorderBrush="#E0E0E0"
+                                    BorderThickness="1" CornerRadius="6" Padding="4">
+                                <ItemsControl ItemsSource="{Binding PartySlots}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:SlotViewModel">
+                                            <Button Classes="party-slot"
+                                                    Background="{Binding Background}"
+                                                    ToolTip.Tip="{Binding ToolTipText}"
+                                                    Command="{Binding SelectCommand}"
+                                                    CommandParameter="{Binding}">
+                                                <Grid ColumnDefinitions="56,*,Auto">
+                                                    <Panel Grid.Column="0">
+                                                        <Image Source="{Binding Sprite}"
+                                                               Stretch="Uniform"
+                                                               Width="52" Height="44" />
+                                                        <Image Source="{Binding ItemSprite}"
+                                                               Width="14" Height="14"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Bottom" />
+                                                    </Panel>
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding DisplayText}"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#37474F" />
+                                                    <TextBlock Grid.Column="2"
+                                                               Text="★"
+                                                               IsVisible="{Binding ShowShinyStar}"
+                                                               Foreground="#FFC107"
+                                                               FontSize="13"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,0,4,0" />
+                                                </Grid>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                        </TabItem>
+
+                        <!-- ── SAV tab ── -->
+                        <TabItem Header="SAV">
+                            <ScrollViewer Margin="0,6,0,0">
+                                <StackPanel Spacing="8">
+
+                                    <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1"
+                                            CornerRadius="6" Padding="10">
+                                        <Grid ColumnDefinitions="Auto,*"
+                                              RowDefinitions="Auto,Auto,Auto,Auto">
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Generation" Classes="kv-key" />
+                                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SavGeneration}" Classes="kv-val" />
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Game" Classes="kv-key" />
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SavGameCode}" Classes="kv-val" />
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Language" Classes="kv-key" />
+                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SavLanguage}" Classes="kv-val" />
+                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Play Time" Classes="kv-key" />
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PlayTime}" Classes="kv-val" />
+                                        </Grid>
+                                    </Border>
+
+                                    <TextBlock Text="No save loaded"
+                                               IsVisible="{Binding !HasSave}"
+                                               FontStyle="Italic" Foreground="#90A4AE"
+                                               HorizontalAlignment="Center" />
+
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                    </TabControl>
 
                 </DockPanel>
             </Border>

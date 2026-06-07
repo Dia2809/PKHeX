@@ -14,6 +14,7 @@ public partial class PokemonEditorViewModel : ViewModelBase
     private PKM? _pk;
     private int _box;
     private int _slot;
+    private bool _isPartySlot;
     private SaveFile? _sav;
 
     // ── observable fields ─────────────────────────────────────────────────────
@@ -96,11 +97,12 @@ public partial class PokemonEditorViewModel : ViewModelBase
 
     // ── public load entry point ───────────────────────────────────────────────
 
-    public void LoadPokemon(PKM pk, int box, int slot, SaveFile sav)
+    public void LoadPokemon(PKM pk, int box, int slot, SaveFile sav, bool isPartySlot = false)
     {
         _pk = pk;
         _box = box;
         _slot = slot;
+        _isPartySlot = isPartySlot;
         _sav = sav;
 
         var strings = GameInfo.GetStrings("en");
@@ -229,7 +231,10 @@ public partial class PokemonEditorViewModel : ViewModelBase
         _pk.EV_SPE = EvSpe;
 
         // Persist to save.
-        _sav.SetBoxSlotAtIndex(_pk, _box, _slot);
+        if (_isPartySlot)
+            _sav.SetPartySlotAtIndex(_pk, _slot);
+        else
+            _sav.SetBoxSlotAtIndex(_pk, _box, _slot);
 
         // Re-run legality.
         RunLegalityCheck();
