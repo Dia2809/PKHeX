@@ -22,6 +22,9 @@
         <Border Classes="card">
           <Grid ColumnDefinitions="*,Auto">
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+              <Image Source="{Binding Sprite}" Stretch="Uniform"
+                     Width="68" Height="56"
+                     VerticalAlignment="Center" Margin="0,0,8,0" />
               <TextBlock Text="{Binding Species}"
                          FontSize="20" FontWeight="Bold"
                          Foreground="#263238"

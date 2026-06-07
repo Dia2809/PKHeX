@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PKHeX.Core;
@@ -51,6 +52,7 @@ public partial class PokemonEditorViewModel : ViewModelBase
     [ObservableProperty] private string _legalityReport = string.Empty;
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(LegalityStatus))] private bool _isLegal;
     [ObservableProperty] private bool _hasPokemon;
+    [ObservableProperty] private Bitmap? _sprite;
 
     // ── computed display helpers ──────────────────────────────────────────────
     public int IvTotal => IvHp + IvAtk + IvDef + IvSpa + IvSpd + IvSpe;
@@ -154,10 +156,23 @@ public partial class PokemonEditorViewModel : ViewModelBase
         EvSpd = pk.EV_SPD;
         EvSpe = pk.EV_SPE;
 
+        // Sprite.
+        UpdateSprite();
+
         // Legality.
         RunLegalityCheck();
 
         HasPokemon = true;
+    }
+
+    private void UpdateSprite()
+    {
+        if (_pk is null)
+        {
+            Sprite = null;
+            return;
+        }
+        Sprite = SpriteLoader.GetSprite(_pk.Species, _pk.Form, _pk.Gender, _pk.IsShiny);
     }
 
     // ── commands ──────────────────────────────────────────────────────────────
@@ -218,6 +233,9 @@ public partial class PokemonEditorViewModel : ViewModelBase
 
         // Re-run legality.
         RunLegalityCheck();
+
+        // Refresh sprite (form/item/shiny may have changed).
+        UpdateSprite();
 
         // Let the owner refresh the box grid (shiny colour, species, etc.).
         Applied?.Invoke();

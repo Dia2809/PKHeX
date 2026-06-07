@@ -30,4 +30,19 @@
     <AvaloniaResource Include="Assets/**" />
   </ItemGroup>
 
+  <!-- Embed PKHeX's loose PNG sprites (shared with the WinForms project) so the
+       Avalonia app renders real Pokémon/item images on any platform. The Link
+       flattens each set into a logical Assets folder for clean avares:// URIs. -->
+  <ItemGroup>
+    <AvaloniaResource Include="..\PKHeX.Drawing.PokeSprite\Resources\img\Big Pokemon Sprites\*.png">
+      <Link>Assets\sprites\%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+    <AvaloniaResource Include="..\PKHeX.Drawing.PokeSprite\Resources\img\Big Shiny Sprites\*.png">
+      <Link>Assets\sprites\%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+    <AvaloniaResource Include="..\PKHeX.Drawing.PokeSprite\Resources\img\Big Items\*.png">
+      <Link>Assets\items\%(Filename)%(Extension)</Link>
+    </AvaloniaResource>
+  </ItemGroup>
+
 </Project>

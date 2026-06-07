@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using PKHeX.Core;
 
@@ -20,6 +21,9 @@ public partial class SlotViewModel : ViewModelBase
     [ObservableProperty] private string _toolTipText = "";
     [ObservableProperty] private IBrush _background = Brushes.Transparent;
     [ObservableProperty] private bool _isEmpty = true;
+    [ObservableProperty] private Bitmap? _sprite;
+    [ObservableProperty] private Bitmap? _itemSprite;
+    [ObservableProperty] private bool _showShinyStar;
 
     private static readonly IBrush ShinyBrush = new SolidColorBrush(Color.Parse("#FFD700"));
     private static readonly IBrush OccupiedBrush = new SolidColorBrush(Color.Parse("#D0E8FF"));
@@ -47,6 +51,9 @@ public partial class SlotViewModel : ViewModelBase
             DisplayText = "";
             ToolTipText = "Empty";
             Background = Brushes.Transparent;
+            Sprite = null;
+            ItemSprite = null;
+            ShowShinyStar = false;
             return;
         }
 
@@ -55,5 +62,8 @@ public partial class SlotViewModel : ViewModelBase
         DisplayText = name;
         ToolTipText = $"Lv.{Entity.CurrentLevel} {name}{(Entity.IsShiny ? " ★" : "")}";
         Background = Entity.IsShiny ? ShinyBrush : OccupiedBrush;
+        Sprite = SpriteLoader.GetSprite(Entity.Species, Entity.Form, Entity.Gender, Entity.IsShiny);
+        ItemSprite = SpriteLoader.GetItem(Entity.HeldItem);
+        ShowShinyStar = Entity.IsShiny;
     }
 }
