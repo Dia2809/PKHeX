@@ -145,8 +145,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private void Exit()
     {
         // Request the application to shut down.
-        if (Avalonia.Application.Current?.ApplicationLifetime is
-            Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
+        if (global::Avalonia.Application.Current?.ApplicationLifetime is
+            global::Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.Shutdown();
         }

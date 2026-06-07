@@ -160,7 +160,7 @@ public partial class PokemonEditorViewModel : ViewModelBase
 
         // Write all editable fields back to the PKM.
         _pk.Nickname = Nickname;
-        _pk.CurrentLevel = Level;
+        _pk.CurrentLevel = (byte)Level;
         _pk.OriginalTrainerName = OtName;
         _pk.IsNicknamed = IsNicknamed;
 
