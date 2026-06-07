@@ -47,8 +47,7 @@
       <Separator />
 
       <!-- ── Identity section ───────────────────────────────── -->
-      <Grid ColumnDefinitions="120,*,120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-            RowSpacing="4" ColumnSpacing="4">
+      <Grid ColumnDefinitions="120,*,120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
 
         <!-- Row 0: Nickname / Nicknamed -->
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Nickname:" VerticalAlignment="Center" />
@@ -99,8 +98,7 @@
 
       <!-- ── Moves section ──────────────────────────────────── -->
       <TextBlock Text="Moves" FontWeight="Bold" />
-      <Grid ColumnDefinitions="80,*" RowDefinitions="Auto,Auto,Auto,Auto"
-            RowSpacing="4" ColumnSpacing="4">
+      <Grid ColumnDefinitions="80,*" RowDefinitions="Auto,Auto,Auto,Auto">
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Move 1:" VerticalAlignment="Center" />
         <ComboBox  Grid.Row="0" Grid.Column="1"
@@ -131,8 +129,7 @@
 
       <!-- ── IVs / EVs section ──────────────────────────────── -->
       <TextBlock Text="IVs / EVs" FontWeight="Bold" />
-      <Grid ColumnDefinitions="80,60,8,60,8" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-            RowSpacing="4" ColumnSpacing="4">
+      <Grid ColumnDefinitions="80,60,8,60,8" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
         <!-- Header row -->
         <TextBlock Grid.Row="0" Grid.Column="0" Text="" />
