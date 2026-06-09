@@ -23,6 +23,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<string> _boxNames = [];
     [ObservableProperty] private ObservableCollection<SlotViewModel> _currentBoxSlots = [];
     [ObservableProperty] private ObservableCollection<SlotViewModel> _partySlots = [];
+    [ObservableProperty] private SlotViewModel? _selectedBoxSlot;
+    [ObservableProperty] private SlotViewModel? _selectedPartySlot;
     [ObservableProperty] private PokemonEditorViewModel _pokemonEditor = new();
 
     // SAV tab info
@@ -196,6 +198,20 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (_sav is not null && value >= 0 && value < _sav.BoxCount)
             LoadBox(value);
+    }
+
+    partial void OnSelectedBoxSlotChanged(SlotViewModel? value)
+    {
+        if (value is null || value.IsEmpty || _sav is null)
+            return;
+        PokemonEditor.LoadPokemon(value.Entity, value.Box, value.Slot, _sav);
+    }
+
+    partial void OnSelectedPartySlotChanged(SlotViewModel? value)
+    {
+        if (value is null || value.IsEmpty || _sav is null)
+            return;
+        PokemonEditor.LoadPokemon(value.Entity, -1, value.Slot, _sav, isPartySlot: true);
     }
 
     // ── private helpers ──────────────────────────────────────────────────────

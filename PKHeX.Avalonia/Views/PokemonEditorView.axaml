@@ -3,7 +3,30 @@
              xmlns:vm="using:PKHeX.Avalonia.ViewModels"
              x:Class="PKHeX.Avalonia.Views.PokemonEditorView"
              x:DataType="vm:PokemonEditorViewModel">
-  <Panel>
+  <!-- DockPanel keeps Apply pinned at top so it's reachable without scrolling
+       (important for controller / Steam Deck use). -->
+  <DockPanel>
+
+    <!-- Sticky Apply bar — always visible at top of editor panel -->
+    <Border DockPanel.Dock="Top"
+            IsVisible="{Binding HasPokemon}"
+            Background="#E3F2FD"
+            BorderBrush="#90CAF9" BorderThickness="0,0,0,1"
+            Padding="8,6" Margin="0,0,0,4">
+      <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+        <TextBlock Grid.Column="0"
+                   Text="{Binding Species, StringFormat='Editing: {0}'}"
+                   VerticalAlignment="Center"
+                   FontWeight="SemiBold" Foreground="#1565C0" />
+        <Button Grid.Column="1" Classes="tool" Content="Max IVs"
+                Command="{Binding MaxIVsCommand}" Margin="0,0,6,0" />
+        <Button Grid.Column="2" Classes="tool" Content="Zero EVs"
+                Command="{Binding ZeroEVsCommand}" Margin="0,0,6,0" />
+        <Button Grid.Column="3" Classes="primary" Content="Apply  [Enter]"
+                Command="{Binding ApplyChangesCommand}"
+                HotKey="Return" />
+      </Grid>
+    </Border>
 
     <!-- Empty state -->
     <TextBlock Text="Select a Pokémon to edit"
@@ -194,15 +217,7 @@
           </Border>
         </Expander>
 
-        <!-- ── Apply ──────────────────────────────────────────── -->
-        <Button Classes="primary"
-                Content="Apply Changes"
-                Command="{Binding ApplyChangesCommand}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Margin="0,0,0,4" />
-
       </StackPanel>
     </ScrollViewer>
-  </Panel>
+  </DockPanel>
 </UserControl>
