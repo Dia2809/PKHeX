@@ -20,6 +20,9 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <!-- Force a patched version of the transitive Avalonia → Tmds.DBus.Protocol
+         dependency to eliminate the high-severity advisory GHSA-xrw6-gwf8-vvr9. -->
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.2" />
   </ItemGroup>
 
   <ItemGroup>

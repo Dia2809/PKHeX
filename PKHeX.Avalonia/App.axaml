@@ -122,54 +122,5 @@
             <Setter Property="BorderThickness" Value="2" />
         </Style>
 
-        <!-- Slot ListBoxItem base -->
-        <Style Selector="ListBoxItem.slot-item">
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Margin" Value="1" />
-            <Setter Property="CornerRadius" Value="5" />
-            <Setter Property="Width" Value="54" />
-            <Setter Property="Height" Value="48" />
-        </Style>
-        <!-- Remove the default blue selection fill; our content provides colour -->
-        <Style Selector="ListBoxItem.slot-item:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-        <!-- Selected = bright border ring (visible whether mouse or controller) -->
-        <Style Selector="ListBoxItem.slot-item:selected">
-            <Setter Property="BorderBrush" Value="#1565C0" />
-            <Setter Property="BorderThickness" Value="2" />
-        </Style>
-        <!-- Focus ring (controller D-pad navigation) -->
-        <Style Selector="ListBoxItem.slot-item:focus-visible">
-            <Setter Property="BorderBrush" Value="#1565C0" />
-            <Setter Property="BorderThickness" Value="3" />
-        </Style>
-        <Style Selector="ListBoxItem.slot-item:pointerover">
-            <Setter Property="BorderBrush" Value="#42A5F5" />
-            <Setter Property="BorderThickness" Value="2" />
-        </Style>
-
-        <!-- Party ListBoxItem -->
-        <Style Selector="ListBoxItem.party-item">
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Margin" Value="2,2" />
-            <Setter Property="CornerRadius" Value="5" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        </Style>
-        <Style Selector="ListBoxItem.party-item:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-        <Style Selector="ListBoxItem.party-item:selected">
-            <Setter Property="BorderBrush" Value="#1565C0" />
-            <Setter Property="BorderThickness" Value="2" />
-        </Style>
-        <Style Selector="ListBoxItem.party-item:focus-visible">
-            <Setter Property="BorderBrush" Value="#1565C0" />
-            <Setter Property="BorderThickness" Value="3" />
-        </Style>
-        <Style Selector="ListBoxItem.party-item:pointerover">
-            <Setter Property="BorderBrush" Value="#42A5F5" />
-            <Setter Property="BorderThickness" Value="2" />
-        </Style>
     </Application.Styles>
 </Application>

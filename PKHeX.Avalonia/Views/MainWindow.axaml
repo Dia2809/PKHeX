@@ -94,16 +94,38 @@
                                                     <WrapPanel />
                                                 </ItemsPanelTemplate>
                                             </ListBox.ItemsPanel>
-                                            <ListBox.ItemContainerTheme>
-                                                <ControlTheme TargetType="ListBoxItem"
-                                                              BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                                    <Setter Property="Classes" Value="slot-item" />
-                                                    <Setter Property="ToolTip.Tip" Value="{Binding ToolTipText}" />
-                                                </ControlTheme>
-                                            </ListBox.ItemContainerTheme>
+                                            <!-- Classes can't be set via a Setter; all per-state
+                                                 overrides go here as scoped ListBox.Styles. -->
+                                            <ListBox.Styles>
+                                                <Style Selector="ListBoxItem">
+                                                    <Setter Property="Padding" Value="0" />
+                                                    <Setter Property="Margin" Value="1" />
+                                                    <Setter Property="CornerRadius" Value="5" />
+                                                    <Setter Property="Width" Value="54" />
+                                                    <Setter Property="Height" Value="48" />
+                                                </Style>
+                                                <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                </Style>
+                                                <Style Selector="ListBoxItem:selected">
+                                                    <Setter Property="BorderBrush" Value="#1565C0" />
+                                                    <Setter Property="BorderThickness" Value="2" />
+                                                </Style>
+                                                <Style Selector="ListBoxItem:focus-visible">
+                                                    <Setter Property="BorderBrush" Value="#1565C0" />
+                                                    <Setter Property="BorderThickness" Value="3" />
+                                                </Style>
+                                                <Style Selector="ListBoxItem:pointerover">
+                                                    <Setter Property="BorderBrush" Value="#42A5F5" />
+                                                    <Setter Property="BorderThickness" Value="2" />
+                                                </Style>
+                                            </ListBox.Styles>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate x:DataType="vm:SlotViewModel">
-                                                    <Panel Width="50" Height="44">
+                                                    <!-- ToolTip goes on the content panel, not a Style Setter,
+                                                         to keep compiled-binding mode happy. -->
+                                                    <Panel Width="50" Height="44"
+                                                           ToolTip.Tip="{Binding ToolTipText}">
                                                         <Border Background="{Binding Background}"
                                                                 CornerRadius="4"
                                                                 HorizontalAlignment="Stretch"
@@ -143,16 +165,33 @@
                                          SelectedItem="{Binding SelectedPartySlot}"
                                          Background="Transparent"
                                          BorderThickness="0">
-                                    <ListBox.ItemContainerTheme>
-                                        <ControlTheme TargetType="ListBoxItem"
-                                                      BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                            <Setter Property="Classes" Value="party-item" />
-                                            <Setter Property="ToolTip.Tip" Value="{Binding ToolTipText}" />
-                                        </ControlTheme>
-                                    </ListBox.ItemContainerTheme>
+                                    <ListBox.Styles>
+                                        <Style Selector="ListBoxItem">
+                                            <Setter Property="Padding" Value="0" />
+                                            <Setter Property="Margin" Value="2,2" />
+                                            <Setter Property="CornerRadius" Value="5" />
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:selected">
+                                            <Setter Property="BorderBrush" Value="#1565C0" />
+                                            <Setter Property="BorderThickness" Value="2" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:focus-visible">
+                                            <Setter Property="BorderBrush" Value="#1565C0" />
+                                            <Setter Property="BorderThickness" Value="3" />
+                                        </Style>
+                                        <Style Selector="ListBoxItem:pointerover">
+                                            <Setter Property="BorderBrush" Value="#42A5F5" />
+                                            <Setter Property="BorderThickness" Value="2" />
+                                        </Style>
+                                    </ListBox.Styles>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate x:DataType="vm:SlotViewModel">
-                                            <Grid ColumnDefinitions="56,*,Auto" MinHeight="52">
+                                            <Grid ColumnDefinitions="56,*,Auto" MinHeight="52"
+                                                  ToolTip.Tip="{Binding ToolTipText}">
                                                 <Panel Grid.Column="0">
                                                     <Border Background="{Binding Background}"
                                                             CornerRadius="4"
