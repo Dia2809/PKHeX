@@ -80,22 +80,22 @@
                                           HorizontalAlignment="Stretch"
                                           Margin="0,0,0,6" />
 
-                                <!-- Box slots — ListBox gives arrow-key navigation for free.
-                                     WrapPanel arranges 6 items per row (52+2px each ≈ 324px). -->
+                                <!-- Box slots: arrow-key nav handled in code-behind (BoxList_KeyDown)
+                                     because WrapPanel doesn't implement INavigableContainer. -->
                                 <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1"
                                         CornerRadius="6" Padding="4">
-                                    <ScrollViewer>
-                                        <ListBox ItemsSource="{Binding CurrentBoxSlots}"
+                                        <ListBox x:Name="BoxSlotList"
+                                                 ItemsSource="{Binding CurrentBoxSlots}"
                                                  SelectedItem="{Binding SelectedBoxSlot}"
                                                  Background="Transparent"
-                                                 BorderThickness="0">
+                                                 BorderThickness="0"
+                                                 KeyDown="BoxList_KeyDown"
+                                                 GotFocus="BoxList_GotFocus">
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <WrapPanel />
                                                 </ItemsPanelTemplate>
                                             </ListBox.ItemsPanel>
-                                            <!-- Classes can't be set via a Setter; all per-state
-                                                 overrides go here as scoped ListBox.Styles. -->
                                             <ListBox.Styles>
                                                 <Style Selector="ListBoxItem">
                                                     <Setter Property="Padding" Value="0" />
@@ -122,8 +122,6 @@
                                             </ListBox.Styles>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate x:DataType="vm:SlotViewModel">
-                                                    <!-- ToolTip goes on the content panel, not a Style Setter,
-                                                         to keep compiled-binding mode happy. -->
                                                     <Panel Width="50" Height="44"
                                                            ToolTip.Tip="{Binding ToolTipText}">
                                                         <Border Background="{Binding Background}"
@@ -149,7 +147,6 @@
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
-                                    </ScrollViewer>
                                 </Border>
 
                             </DockPanel>
@@ -161,10 +158,13 @@
                                     BorderThickness="1" CornerRadius="6" Padding="4">
 
                                 <!-- Party ListBox — Up/Down arrows navigate the 6 slots -->
-                                <ListBox ItemsSource="{Binding PartySlots}"
+                                <ListBox x:Name="PartySlotList"
+                                         ItemsSource="{Binding PartySlots}"
                                          SelectedItem="{Binding SelectedPartySlot}"
                                          Background="Transparent"
-                                         BorderThickness="0">
+                                         BorderThickness="0"
+                                         KeyDown="PartyList_KeyDown"
+                                         GotFocus="PartyList_GotFocus">
                                     <ListBox.Styles>
                                         <Style Selector="ListBoxItem">
                                             <Setter Property="Padding" Value="0" />
